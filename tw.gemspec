@@ -22,6 +22,9 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'eventmachine'
   spec.add_dependency 'faye-websocket'
+  spec.add_dependency 'foreman'
+  spec.add_dependency 'sinatra'
+  spec.add_dependency 'sinatra-websocket'
 
   spec.add_development_dependency 'byebug'
   spec.add_development_dependency 'rubocop'

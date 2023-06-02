@@ -4,6 +4,10 @@ Tw is a combination Sinatra and Twitch Chat bot that analyzes chat messages in r
 
 Tw is based on the same architecture as my `tsc` project. The main addition is the Sinatra server so that users do not have to spend time setting up WSL or Ruby for Windows. Secondarily, Tw uses the `EventMachine#defer` mechanism to background I/O tasks such as playing the audio in local mode, or sending additional websocket requests to the media server in server mode.
 
+### Installation
+
+Install Ruby 3.2 and then `bundle install`.
+
 ### Configuration
 
 #### Chatbot configuration
@@ -23,3 +27,8 @@ The chatbot requires some environment varibles to run:
 #### Sinatra configuration
 
 The only configuration available for the Sinatra server is changing the media file played. To do this, update the `server/public` file and change the name of the file in the `/sound` route in `server/app.rb` to the same name.
+
+
+### Running
+
+If you are running with `TW_MODE=server` use `foreman` to start the chatbot and Sinatra at the same time. `foreman start`. The chatbot will connect based on config and the webserver will start on `localhost:4567`

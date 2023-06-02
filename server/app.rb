@@ -6,7 +6,7 @@ require 'sinatra-websocket'
 set :server, 'thin'
 set :sockets, []
 set :public_folder, 'public'
-
+set :port, 4567
 
 get '/' do
   if !request.websocket?
