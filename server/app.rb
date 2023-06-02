@@ -5,9 +5,9 @@ require 'sinatra-websocket'
 
 set :server, 'thin'
 set :sockets, []
-set :public_folder, 'public'
+set :public_folder, proc { File.join(File.expand_path(__dir__), 'public') }
 set :port, 4567
-set :bind, Proc.new { ENV['development'] ? 'localhost' : '0.0.0.0' }
+set :bind, proc { ENV['development'] ? 'localhost' : '0.0.0.0' }
 
 get '/' do
   if !request.websocket?
