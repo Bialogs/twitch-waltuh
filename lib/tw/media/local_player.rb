@@ -8,8 +8,9 @@ module Tw
         @media_file = File.join(File.expand_path(__dir__), 'waltuh.mp3')
       end
 
-      def operation
+      def operation(trigger)
         proc do
+          puts "Trigger: #{trigger}"
           fork { exec 'mpg123', '-q', @media_file }
         end
       end
