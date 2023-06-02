@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <body>
+     <h1>Twitch Waltuh</h1>
+     <p>Triggered by (latest first):</p>
+     <div id="code">
+
+     </div>
+  </body>
+
+  <script type="text/javascript">
+    window.onload = function() {(
+      function() {
+        var play = function(el) {
+          el.play();
+        }
+        var show = function(el) {
+          return function(msg) {
+            el.innerHTML = '<p>' + msg + '</p>' + el.innerHTML;
+          }
+        }(document.getElementById('code'));
+
+        const audio = new Audio('http://' + window.location.host + '/sound');
+
+        var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
+        ws.onopen = function()  { show('Loading...'); };
+        ws.onclose = function()  { show('Connection lost...'); }
+        ws.onmessage = function(m) { console.log(m.data); show(m.data); play(audio)};
+      })();
+    }
+  </script>
+</html>
