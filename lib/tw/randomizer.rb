@@ -11,7 +11,10 @@ module Tw
     end
 
     def new_order
-      @order = @emote_list.shuffle.take(rand(@max_combinations) + 1)
+      @order = []
+      (rand(@max_combinations) + 1).times do
+        @order << @emote_list[rand(@max_combinations)]
+      end
       print "New order is: "
       p @order
     end
