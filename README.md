@@ -6,7 +6,7 @@ Tw is based on the same architecture as my `tsc` project. The main addition is t
 
 ### Installation
 
-Install Ruby 3.2 and then `bundle install`.
+Install Ruby 3.2 and then `bundle install` and then `gem install foreman`.
 
 ### Configuration
 
