@@ -7,6 +7,7 @@ set :server, 'thin'
 set :sockets, []
 set :public_folder, 'public'
 set :port, 4567
+set :bind, Proc.new { ENV['development'] ? 'localhost' : '0.0.0.0' }
 
 get '/' do
   if !request.websocket?
