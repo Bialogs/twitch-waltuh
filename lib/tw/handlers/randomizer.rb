@@ -68,7 +68,7 @@ module Tw
       def callback(message, player)
         proc do |result|
           if result
-            EM.defer(player.operation(self.class.name.split('::').last.downcase, message[:user]), player.callback,
+            EM.defer(player.operation("#{self.class.name.split('::').last.downcase},#{message[:user]}"), player.callback,
                      player.errback)
           end
         end
