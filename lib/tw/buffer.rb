@@ -2,7 +2,7 @@
 
 module Tw
   class Buffer
-    attr_reader :values
+    attr_reader :values, :size
 
     def initialize(size)
       @size = size
