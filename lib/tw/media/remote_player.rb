@@ -14,8 +14,8 @@ module Tw
 
       def operation(trigger)
         proc do
-            wsc = Faye::WebSocket::Client.new(@wss)
-            wsc.send(trigger.to_s)
+          wsc = Faye::WebSocket::Client.new(@wss)
+          wsc.send(trigger.to_s)
         end
       end
 
