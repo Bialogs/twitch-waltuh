@@ -23,10 +23,7 @@ module Tw
     !ts.nil? && ts + 90 > Time.now.to_i
   end
 
-  conf = Configuration.new
-  randomizer = Randomizer.new(Conf::WORDS)
-  player = conf.mode == 'local' ? Media::LocalPlayer.new : Media::RemotePlayer.new(conf.media_server)
-  last_solved_at = nil
+  player = Media::RemotePlayer.new(conf.media_server)
 
   EM.run do
     ws = Faye::WebSocket::Client.new(conf.wss_server)

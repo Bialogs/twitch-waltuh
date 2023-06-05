@@ -2,14 +2,10 @@
 
 module Tw
   class Configuration
-    attr_reader :oauth_string, :wss_server, :twitch_user, :twitch_channel, :media_server, :mode
+    attr_reader :oauth_string, :wss_server, :twitch_user, :twitch_channel, :media_server
 
     def self.raise_unless_present(env)
       ENV.fetch(env) { raise Tw::ConfigurationError.new(config: env) }
-    end
-
-    class << self
-      attr_reader :database
     end
 
     def initialize(configure_twitch: true)
@@ -19,12 +15,7 @@ module Tw
       @twitch_user = Configuration.raise_unless_present('TW_TWITCH_USER')
       @twitch_channel = Configuration.raise_unless_present('TW_TWITCH_CHANNEL')
       @wss_server = ENV.fetch('TW_WSS_SERVER', 'wss://irc-ws.chat.twitch.tv:443')
-      @mode = ENV.fetch('TW_MODE', 'local')
-      if @mode != 'local'
-        @media_server = Configuration.raise_unless_present('TW_MEDIA_SERVER')
-      else
-        @media_server = nil
-      end
+      @media_server = Configuration.raise_unless_present('TW_MEDIA_SERVER')
     end
   end
 end
