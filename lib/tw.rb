@@ -10,7 +10,8 @@ require_relative 'tw/irc'
 require_relative 'tw/randomizer'
 require_relative 'tw/buffer'
 require_relative 'tw/conf/words'
-require_relative 'tw/media/local_player'
+require_relative 'tw/conf/vips'
+
 require_relative 'tw/media/remote_player'
 
 module Tw
