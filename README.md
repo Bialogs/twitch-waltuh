@@ -2,7 +2,9 @@ Tw is a combination Sinatra and Twitch Chat bot that analyzes chat messages in r
 
 ### Design
 
-Tw is based on the same architecture as my `tsc` project. The main addition is the Sinatra server so that users do not have to spend time setting up WSL or Ruby for Windows. Secondarily, Tw uses the `EventMachine#defer` mechanism to background I/O tasks such as playing the audio in local mode, or sending additional websocket requests to the media server in server mode.
+Tw is based on the same architecture as my `tsc` project. The main addition is the Sinatra server so that users do not have to spend time setting up WSL or Ruby for Windows. Secondarily, Tw uses the `EventMachine#defer` pattern to background I/O tasks such as playing the audio or sending additional websocket requests to the media server in server mode as well as offloading logic for calculating if events have been triggered.
+
+The main `tw.rb` module sets up `Handlers`, `Conf`, and the websocket connection. It then enters into the main `EventMachine` loop where on new websocket messages a sound event handler is started via `EM#defer`. To add new triggers for sounds, create a new handler with callbacks expected by `EM#defer` and add an entry into the list `on :message`. In the implementation of a handler it is important to use a `Mutex` to synchronize access to buffers and shared state since the trigger logic can run in different EventMachine threads at once.
 
 ### Installation
 
@@ -14,15 +16,16 @@ Install Ruby 3.2 and then `bundle install` and then `gem install foreman`.
 
 Wordlist is contained in `lib/tw/conf/words.txt`. Words must be separated by newline.
 
-When operating in local mode, the sound played can be configured by changing the mp3 in `lib/tw/media` and updating the name of the media file in `Media::LocalPlayer#initalize`
+VIP wordlist is contained in `lib/tw/conf/vip_words.txt`. Words must be separated by newline. There is a mapping between words and sounds played in a configuration object within `server/views/index.erb`.
+
+VIPs are configured in `lib/tw/conf/vips.txt`. VIPs must be separated by newline.
 
 The chatbot requires some environment varibles to run:
 * `TW_OAUTH_STRING` (oauth token provided by Twitch when setting up a chatbot)
 * `TW_TWITCH_USER` (username of the chatbot)
 * `TW_TWITCH_CHANNEL` (channel the chatbot will listen in on/one channel per chatbot process)
 * `TW_WSS_SERVER` (defaults to Twitch's irc-ws server)
-* `TW_MODE` (defaults to local but setting it to anything else, like server, will send playback to `TW_MEDIA_SERVER`)
-* `TW_MEDIA_SERVER` (weboscket server contained in `server/`)
+* `TW_MEDIA_SERVER` (url to weboscket server contained in `server/`)
 
 #### Sinatra configuration
 
@@ -31,4 +34,4 @@ The only configuration available for the Sinatra server is changing the media fi
 
 ### Running
 
-If you are running with `TW_MODE=server` use `foreman` to start the chatbot and Sinatra at the same time. `foreman start`. The chatbot will connect based on config and the webserver will start on `localhost:4567`
+Use `foreman start` from the project's root directory to start the chatbot and Sinatra at the same time. The chatbot will connect based on config and the webserver will start on `localhost:4567` or `0.0.0.0:4567` unless the development environment variable is set.
