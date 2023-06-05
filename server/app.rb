@@ -19,7 +19,7 @@ get '/' do
       end
 
       ws.onmessage do |msg|
-        EM.next_tick { settings.sockets.each { |s| s.send(msg)}}
+        EM.next_tick { settings.sockets.each { |s| s.send(msg) } }
       end
 
       ws.onclose do
