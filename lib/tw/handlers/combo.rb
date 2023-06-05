@@ -27,6 +27,7 @@ module Tw
       def operation(message)
         proc do
           next false if on_cooldown?
+
           words = message[:body].split(' ')
 
           if words.size > 2 || words[-1] == '\u{E0000}'
@@ -35,7 +36,7 @@ module Tw
             end
           else
             @semaphore.synchronize do
-              if (words[0] != @last_word && !@last_word.nil?)
+              if words[0] != @last_word && !@last_word.nil?
                 broken_combo
               else
                 @last_word = words.pop
