@@ -57,7 +57,7 @@
   </body>
 
   <script type="text/javascript">
-    var comboAudioSound = new Audio('http://' + window.location.host + '/sound');
+    var comboAudioSound = new Audio('https://' + window.location.host + '/sound');
     var comboAudio = new Array();
 
     for (var i = 0; i < 3; i++) {
@@ -68,7 +68,7 @@
     }
     comboAudioSound = null;
 
-    var randomizerAudio = new Audio('http://' + window.location.host + '/sound');
+    var randomizerAudio = new Audio('https://' + window.location.host + '/sound');
     randomizerAudio.volume = 0.4;
 
     function sleep(ms) {
@@ -100,7 +100,7 @@
 
     window.onload = function() {(
       function() {
-        var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
+        var ws = new WebSocket('wss://' + window.location.host + window.location.pathname);
 
         ws.onopen = function()  {
           indication = document.getElementById("connection-indiciation");
