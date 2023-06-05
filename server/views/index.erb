@@ -2,7 +2,7 @@
 <html>
   <body>
      <h1>Twitch Waltuh</h1>
-     <a href="#">Click this to enable autoplay sound</a>
+     <a id="autoplay-link" href="#">Click this to enable autoplay sound</a> <span style="color:red" id="autoplay-indication">SOUND IS OFF</span>
      <p>Triggered by (latest first):</p>
      <div id="code">
 
@@ -15,6 +15,7 @@
         var play = function(el) {
           el.play();
         }
+
         var show = function(el) {
           return function(msg) {
             el.innerHTML = '<p>' + msg + '</p>' + el.innerHTML;
@@ -22,11 +23,18 @@
         }(document.getElementById('code'));
 
         const audio = new Audio('http://' + window.location.host + '/sound');
+        audio.volume = 0.4; // 40% of the original volume
 
         var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
         ws.onopen = function()  { show('Loading...'); };
         ws.onclose = function()  { show('Connection lost...'); }
         ws.onmessage = function(m) { console.log(m.data); show(m.data); play(audio)};
+
+        document.getElementById("autoplay-link").onclick = function() {
+          indication = document.getElementById("autoplay-indication");
+          indication.innerHTML = "SOUND IS ON";
+          indication.style = "color:green";
+        }
       })();
     }
   </script>
