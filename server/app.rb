@@ -34,6 +34,7 @@ end
 
 get '/' do
   if !request.websocket?
+    @tls = ENV['TW_TLS_ENABLED']
     erb :index
   else
     request.websocket do |ws|

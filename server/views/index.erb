@@ -57,7 +57,13 @@
   </body>
 
   <script type="text/javascript">
-    var comboAudioSound = new Audio('https://' + window.location.host + '/sound');
+    <% if @tls %>
+      var comboAudioSound = new Audio('https://' + window.location.host + '/sound');
+      var randomizerAudio = new Audio('https://' + window.location.host + '/sound');
+    <% else %>
+      var comboAudioSound = new Audio('http://' + window.location.host + '/sound');
+      var randomizerAudio = new Audio('http://' + window.location.host + '/sound');
+    <% end %>
     var comboAudio = new Array();
 
     for (var i = 0; i < 3; i++) {
@@ -68,7 +74,7 @@
     }
     comboAudioSound = null;
 
-    var randomizerAudio = new Audio('https://' + window.location.host + '/sound');
+
     randomizerAudio.volume = 0.4;
 
     function sleep(ms) {
@@ -80,8 +86,7 @@
       tr = tbody.insertRow();
       switch(message[0]) {
         case "randomizer":
-          td = tr.insertCell();
-          td.appendChild(document.createTextNode(message[1]));
+          td = tr.insertCell().appendChild(document.createTextNode(message[1]));
           randomizerAudio.play();
           break;
         case "combo":
@@ -100,7 +105,12 @@
 
     window.onload = function() {(
       function() {
-        var ws = new WebSocket('wss://' + window.location.host + window.location.pathname);
+        <% if @tls %>
+          var ws = new WebSocket('wss://' + window.location.host + window.location.pathname);
+        <% else %>
+          var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
+        <% end %>
+
 
         ws.onopen = function()  {
           indication = document.getElementById("connection-indiciation");
