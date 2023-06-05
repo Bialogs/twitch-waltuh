@@ -1,34 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html style="background-color:gray">
   <body>
-     <h1>Twitch Waltuh</h1>
-     <a id="autoplay-link" href="#">Click this to enable autoplay sound</a> <span style="color:red" id="autoplay-indication">SOUND IS OFF</span>
-     <p>Triggered by (latest first):</p>
-     <div id="code">
+    <h1>Twitch Waltuh</h1>
 
-     </div>
+    <a id="autoplay-link" href="#">Click this to enable autoplay sound</a>
+
+    <table style="border:3px solid black">'
+      <thead>
+        <tr>
+          <th>Sound</th>
+          <th>Connection Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>
+            <span style="color:red" id="autoplay-indication">SOUND IS OFF</span>
+          </th>
+          <th>
+            <span style="color:red" id="connection-indiciation">LOST CONNECTION</span>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+    <br />
+    <table style="border:3px solid black" id="randomizer">
+      <thead>
+        <tr>
+          <th>
+            Randomizer triggered by (latest first):
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    <table>
+
+    <br />
+    <br />
+
+    <table style="border:3px solid black" id="combo">
+      <thead>
+        <tr>
+          <th>
+            Combo triggered by (latest first):
+          </th>
+          <th>
+           Word:
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    <table>
   </body>
 
   <script type="text/javascript">
+    var comboAudioSound = new Audio('http://' + window.location.host + '/sound');
+    var comboAudio = new Array();
+
+    for (var i = 0; i < 3; i++) {
+      csn = comboAudioSound.cloneNode();
+      csn.volume = 0.4;
+      csn.load();
+      comboAudio.push(csn);
+    }
+    comboAudioSound = null;
+
+    var randomizerAudio = new Audio('http://' + window.location.host + '/sound');
+    randomizerAudio.volume = 0.4;
+
+    function sleep(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+    };
+
+    async function handle(message, randomizerAudio, comboAudio) {
+      tbody = document.getElementById(message[0]).getElementsByTagName('tbody')[0];
+      tr = tbody.insertRow();
+      switch(message[0]) {
+        case "randomizer":
+          td = tr.insertCell();
+          td.appendChild(document.createTextNode(message[1]));
+          randomizerAudio.play();
+          break;
+        case "combo":
+          tr.insertCell().appendChild(document.createTextNode(message[1]));
+          tr.insertCell().appendChild(document.createTextNode(message[2]));
+          for(var i = 0; i < comboAudio.length; i++) {
+            comboAudio[i].play();
+            await sleep(2000);
+          }
+          break;
+        default:
+          console.log("Not implemented yet");
+          break;
+      }
+    };
+
     window.onload = function() {(
       function() {
-        var play = function(el) {
-          el.play();
-        }
-
-        var show = function(el) {
-          return function(msg) {
-            el.innerHTML = '<p>' + msg + '</p>' + el.innerHTML;
-          }
-        }(document.getElementById('code'));
-
-        const audio = new Audio('http://' + window.location.host + '/sound');
-        audio.volume = 0.4; // 40% of the original volume
-
         var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
-        ws.onopen = function()  { show('Loading...'); };
-        ws.onclose = function()  { show('Connection lost...'); }
-        ws.onmessage = function(m) { console.log(m.data); show(m.data); play(audio)};
+
+        ws.onopen = function()  {
+          indication = document.getElementById("connection-indiciation");
+          indication.innerHTML = "CONNECTED";
+          indication.style = "color:green";
+        };
+
+        ws.onclose = function()  {
+          indication = document.getElementById("connection-indiciation");
+          indication.innerHTML = "NOT CONNECTED";
+          indication.style = "color:red";
+        };
+
+        ws.onmessage = function(m) {
+          console.log(m.data);
+          var message = m.data.split(",")
+          handle(message, randomizerAudio, comboAudio);
+        };
 
         document.getElementById("autoplay-link").onclick = function() {
           indication = document.getElementById("autoplay-indication");
