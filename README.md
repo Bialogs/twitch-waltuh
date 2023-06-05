@@ -29,8 +29,11 @@ The chatbot requires some environment varibles to run:
 
 #### Sinatra configuration
 
-The only configuration available for the Sinatra server is changing the media file played. To do this, update the `server/public` file and change the name of the file in the `/sound` route in `server/app.rb` to the same name.
-
+Sinatra has the following environment variables:
+* `development` (bind to localhost or 0.0.0.0 if present)
+* `TW_TLS_ENABLED` (set up Sinatra ssl options if present)
+* `TW_SERVER_CHAIN_PATH`
+* `TW_SERVER_KEY_PATH`
 
 ### Running
 
