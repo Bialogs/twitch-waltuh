@@ -7,12 +7,13 @@ module Tw
   module Handlers
     class Vip
       def initialize(vips, vip_word_list)
+        @semaphore = Mutex.new()
         @vips_hash = {}
-        vips.each do { |vip| vips_hash[vip] = nil }
+        vips.each { |vip| @vips_hash[vip] = nil }
         @vip_word_list = vip_word_list
       end
 
-      def on_cooldown(key)
+      def on_cooldown?(key)
         !@vips_hash[key].nil? && @vips_hash[key] + 600 > Time.now.to_i
       end
 
@@ -26,8 +27,11 @@ module Tw
 
           next false unless message_array.size == 2
 
-          next false unless @vip_word_list.include?(message_array[1]) in
+          next false unless @vip_word_list.include?(message_array[1])
 
+          @semaphore.synchronize {
+            @vips_hash[message[:user]] = Time.now.to_i
+          }
           true
         end
       end

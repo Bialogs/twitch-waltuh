@@ -55,6 +55,9 @@
       </tbody>
     <table>
 
+    <br />
+    <br />
+
     <table style="border:3px solid black" id="vip">
       <thead>
         <tr>
@@ -84,9 +87,9 @@
     <% else %>
       var comboAudioSound = new Audio('http://' + window.location.host + '/waltuh');
       var randomizerAudio = new Audio('http://' + window.location.host + '/waltuh');
-      vipAudioMap.set('97', new Audio('https://' + window.location.host + '/97'));
-      vipAudioMap.set('jesse', new Audio('https://' + window.location.host + '/jesse'));
-      vipAudioMap.set('cancer', new Audio('https://' + window.location.host + '/cancer'));
+      vipAudioMap.set('97', new Audio('http://' + window.location.host + '/97'));
+      vipAudioMap.set('jesse', new Audio('http://' + window.location.host + '/jesse'));
+      vipAudioMap.set('cancer', new Audio('http://' + window.location.host + '/cancer'));
     <% end %>
 
     for (var i = 0; i < 3; i++) {

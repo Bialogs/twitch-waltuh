@@ -58,13 +58,13 @@ get '/waltuh' do
 end
 
 get '/97' do
-  send_file File.join(settings.public_folder, 'jesse.mp3')
+  send_file File.join(settings.public_folder, '97.mp3')
 end
 
 get '/jesse' do
-  send_file File.join(settings.public_folder, 'cancer.mp3')
+  send_file File.join(settings.public_folder, 'jesse.mp3')
 end
 
 get '/cancer' do
-  send_file File.join(settings.public_folder, '97.mp3')
+  send_file File.join(settings.public_folder, 'cancer.mp3')
 end
