@@ -39,7 +39,7 @@ module Tw
               if words[0] != @last_word && !@last_word.nil?
                 broken_combo
               else
-                @last_word = words.pop
+                @last_word = words[0]
                 @comboers.insert(message[:user])
                 if !@comboers.values.any?(nil) && @comboers.values.uniq.count == @comboers.size
                   @last_solved_at = Time.now.to_i
