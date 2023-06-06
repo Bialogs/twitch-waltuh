@@ -19,6 +19,8 @@ module Tw
 
       def operation(message)
         proc do
+          next false unless @vips_hash.include?(message[:user])
+
           next false if on_cooldown?(message[:user])
 
           next false unless message[:body].start_with?('!sound')
