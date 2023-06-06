@@ -29,7 +29,7 @@
       <thead>
         <tr>
           <th>
-            Randomizer triggered by (latest first):
+            Randomizer triggered by (latest last):
           </th>
         </tr>
       </thead>
@@ -44,7 +44,22 @@
       <thead>
         <tr>
           <th>
-            Combo triggered by (latest first):
+            Combo triggered by (latest last):
+          </th>
+          <th>
+           Word:
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    <table>
+
+    <table style="border:3px solid black" id="vip">
+      <thead>
+        <tr>
+          <th>
+            Vip triggered by (latest last):
           </th>
           <th>
            Word:
@@ -57,14 +72,22 @@
   </body>
 
   <script type="text/javascript">
-    <% if @tls %>
-      var comboAudioSound = new Audio('https://' + window.location.host + '/sound');
-      var randomizerAudio = new Audio('https://' + window.location.host + '/sound');
-    <% else %>
-      var comboAudioSound = new Audio('http://' + window.location.host + '/sound');
-      var randomizerAudio = new Audio('http://' + window.location.host + '/sound');
-    <% end %>
+    var vipAudioMap = new Map();
     var comboAudio = new Array();
+
+    <% if @tls %>
+      var comboAudioSound = new Audio('https://' + window.location.host + '/waltuh');
+      var randomizerAudio = new Audio('https://' + window.location.host + '/waltuh');
+      vipAudioMap.set('97', new Audio('https://' + window.location.host + '/97'));
+      vipAudioMap.set('jesse', new Audio('https://' + window.location.host + '/jesse'));
+      vipAudioMap.set('cancer', new Audio('https://' + window.location.host + '/cancer'));
+    <% else %>
+      var comboAudioSound = new Audio('http://' + window.location.host + '/waltuh');
+      var randomizerAudio = new Audio('http://' + window.location.host + '/waltuh');
+      vipAudioMap.set('97', new Audio('https://' + window.location.host + '/97'));
+      vipAudioMap.set('jesse', new Audio('https://' + window.location.host + '/jesse'));
+      vipAudioMap.set('cancer', new Audio('https://' + window.location.host + '/cancer'));
+    <% end %>
 
     for (var i = 0; i < 3; i++) {
       csn = comboAudioSound.cloneNode();
@@ -73,7 +96,6 @@
       comboAudio.push(csn);
     }
     comboAudioSound = null;
-
 
     randomizerAudio.volume = 0.4;
 
@@ -96,6 +118,11 @@
             comboAudio[i].play();
             await sleep(2000);
           }
+          break;
+        case "vip":
+          tr.insertCell().appendChild(document.createTextNode(message[1]));
+          tr.insertCell().appendChild(document.createTextNode(message[2]));
+          vipAudioMap.get(message[2]).play();
           break;
         default:
           console.log("Not implemented yet");
