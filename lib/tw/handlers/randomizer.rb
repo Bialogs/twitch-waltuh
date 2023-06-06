@@ -9,6 +9,7 @@ module Tw
       def initialize(emote_list)
         @semaphore = Mutex.new
         @last_solved_at = nil
+        @last_hint_at = Time.now.to_i
         @emote_list = emote_list
         @max_combinations = emote_list.size
         @semaphore.synchronize do
@@ -72,6 +73,22 @@ module Tw
                      player.errback)
           end
         end
+      end
+
+      def hint_enabled?
+        now = Time.now.to_i
+        @last_solved_at + 1800 >= now && @last_hint_at + 1800 >= now
+      end
+
+      def hint
+        @last_hint_at = Time.now.to_i
+        @semaphore.synchronize {
+          if @order.size >= 4
+            "!waltuh HINT. Length: #{@order.size} Combination: #{@order.tally}"
+          else
+            "!waltuh HINT. Length: #{@order.size}"
+          end
+        }
       end
     end
   end

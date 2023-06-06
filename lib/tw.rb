@@ -32,6 +32,10 @@ module Tw
 
     ws.on :open do |_event|
       irc.join(conf.oauth_string, conf.twitch_user)
+      EM.add_periodic_timer(60) do
+        return unless randomizer.hint_enabled?
+        irc.send_message(randomizer.hint)
+      end
     end
 
     ws.on :message do |event|

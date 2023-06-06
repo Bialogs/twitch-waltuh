@@ -38,5 +38,9 @@ module Tw
     def pong
       ws.send('PONG :tmi.twitch.tv')
     end
+
+    def send_message(message)
+      ws.send("PRIVMSG ##{@channel} :#{message}")
+    end
   end
 end
