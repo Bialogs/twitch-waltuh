@@ -43,7 +43,7 @@ module Tw
 
       # Add player & frontend support for type
       unless message.nil?
-        # EM.defer(vip.operation(message), vip.callback(message, player))
+        EM.defer(vip.operation(message), vip.callback(message, player))
         EM.defer(combo.operation(message), combo.callback(player))
         EM.defer(randomizer.operation(message), randomizer.callback(message, player))
       end
