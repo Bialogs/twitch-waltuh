@@ -13,6 +13,7 @@ require_relative 'tw/chatter'
 require_relative 'tw/handlers/randomizer'
 require_relative 'tw/handlers/vip'
 require_relative 'tw/handlers/combo'
+require_relative 'tw/handlers/vote_kick'
 
 require_relative 'tw/conf/words'
 require_relative 'tw/conf/vips'
@@ -25,6 +26,7 @@ module Tw
   randomizer = Handlers::Randomizer.new(Conf::WORDS)
   vip = Handlers::Vip.new(Conf::VIPS_HASH, Conf::VIP_WORD_LIST_HASH)
   combo = Handlers::Combo.new
+  vote_kick = Handlers::VoteKick.new
 
   player = RemotePlayer.new(conf.media_server)
 
@@ -53,7 +55,7 @@ module Tw
         EM.defer(vip.operation(message), vip.callback(message, player, chatter))
         EM.defer(combo.operation(message), combo.callback(player))
         EM.defer(randomizer.operation(message), randomizer.callback(message, player))
-        # EM.defer(vote_kick.operation(message), vote_kick.callback(, player))
+        EM.defer(vote_kick.operation(message), vote_kick.callback(player))
       end
     end
 

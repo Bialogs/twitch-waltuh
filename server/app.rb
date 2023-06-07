@@ -70,3 +70,7 @@ end
 get '/cancer' do
   send_file File.join(settings.public_folder, 'cancer.mp3')
 end
+
+get '/tumagerkin' do
+  send_file File.join(settings.public_folder, 'tumagerkin.mp3')
+end

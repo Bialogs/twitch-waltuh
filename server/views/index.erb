@@ -58,6 +58,21 @@
     <br />
     <br />
 
+    <table style="border:3px solid black" id="votekick">
+      <thead>
+        <tr>
+          <th>
+            VoteKick started by (latest last):
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    <table>
+
+    <br />
+    <br />
+
     <table style="border:3px solid black" id="vip">
       <thead>
         <tr>
@@ -128,6 +143,12 @@
           tr.insertCell().appendChild(document.createTextNode(message[1]));
           tr.insertCell().appendChild(document.createTextNode(message[2]));
           vipAudioMap.get(message[2]).play();
+          break;
+        case "votekick":
+          tr.insertCell().appendChild(document.createTextNode(message[1]));
+          comboAudio[0].play();
+          comboAudio[1].play();
+          comboAudio[2].play();
           break;
         default:
           console.log("Not implemented yet");
