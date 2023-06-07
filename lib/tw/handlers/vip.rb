@@ -25,11 +25,11 @@ module Tw
 
       def operation(message)
         proc do
-          next false unless @vips.include?(message[:user])
+          next nil unless @vips.include?(message[:user])
 
           next false if on_cooldown?(@vips, message[:user])
 
-          next false unless message[:body].start_with?('!sound')
+          next nil unless message[:body].start_with?('!sound')
 
           message_array = message[:body].split(' ')
 
@@ -54,16 +54,18 @@ module Tw
             cmd = "#{self.class.name.split('::').last.downcase},#{message[:user]},#{message[:body].split(' ')[1]}"
             EM.defer(player.operation(cmd), player.callback, player.errback)
           else
-            msg = "@#{message[:user]} "
+            unless result.nil?
+              msg = "@#{message[:user]} "
 
-            if on_cooldown?(@vips, message[:user])
-              msg << "you are on cooldown for #{time_left(@vips[message[:user]])} seconds"
-            else
-              vip_word = message[:body].split(' ')[1]
-              msg << "#{vip_word} is on cooldown for #{time_left(@vip_word_list[vip_word])}"
+              if on_cooldown?(@vips, message[:user])
+                msg << "you are on cooldown for #{time_left(@vips[message[:user]])} seconds"
+              else
+                vip_word = message[:body].split(' ')[1]
+                msg << "#{vip_word} is on cooldown for #{time_left(@vip_word_list[vip_word])}"
+              end
+
+              EM.defer(chatter.operation(msg), chatter.callback, chatter.errback)
             end
-
-            EM.defer(chatter.operation(msg), chatter.callback, chatter.errback)
           end
         end
       end

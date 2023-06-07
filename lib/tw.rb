@@ -8,6 +8,7 @@ require_relative 'tw/errors'
 require_relative 'tw/configuration'
 require_relative 'tw/irc'
 require_relative 'tw/remote_player'
+require_relative 'tw/chatter'
 
 require_relative 'tw/handlers/randomizer'
 require_relative 'tw/handlers/vip'
@@ -30,6 +31,7 @@ module Tw
   EM.run do
     ws = Faye::WebSocket::Client.new(conf.wss_server)
     irc = Irc.new(ws, conf.twitch_channel)
+    chatter = Chatter.new(irc)
 
     ws.on :open do |_event|
       irc.join(conf.oauth_string, conf.twitch_user)
@@ -48,9 +50,10 @@ module Tw
       message = irc.parse_message(event.data)
 
       unless message.nil?
-        EM.defer(vip.operation(message), vip.callback(message, player))
+        EM.defer(vip.operation(message), vip.callback(message, player, chatter))
         EM.defer(combo.operation(message), combo.callback(player))
         EM.defer(randomizer.operation(message), randomizer.callback(message, player))
+        # EM.defer(vote_kick.operation(message), vote_kick.callback(, player))
       end
     end
 
