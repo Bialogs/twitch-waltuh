@@ -7,6 +7,7 @@ require_relative 'tw/version'
 require_relative 'tw/errors'
 require_relative 'tw/configuration'
 require_relative 'tw/irc'
+require_relative 'tw/remote_player'
 
 require_relative 'tw/handlers/randomizer'
 require_relative 'tw/handlers/vip'
@@ -15,8 +16,8 @@ require_relative 'tw/handlers/combo'
 require_relative 'tw/conf/words'
 require_relative 'tw/conf/vips'
 
-require_relative 'tw/media/remote_player'
-
+# Main program module containing setup, event loop initialization, and handler
+# registration
 module Tw
   conf = Configuration.new
 
@@ -33,7 +34,8 @@ module Tw
     ws.on :open do |_event|
       irc.join(conf.oauth_string, conf.twitch_user)
       EM.add_periodic_timer(60) do
-        return unless randomizer.hint_enabled?
+        next unless randomizer.hint_enabled?
+
         irc.send_message(randomizer.hint)
       end
     end

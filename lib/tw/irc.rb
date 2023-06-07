@@ -1,18 +1,19 @@
 # frozen_string_literal: true
 
 module Tw
+  # IRC over Websockets communication with the Twitch server
   class Irc
-    attr_accessor :channel, :ws
+    attr_accessor :channel, :wsc
 
-    def initialize(ws, channel)
+    def initialize(wsc, channel)
       @channel = channel
-      @ws = ws
+      @wsc = wsc
     end
 
     def join(oauth_string, twitch_user)
-      ws.send("PASS oauth:#{oauth_string}")
-      ws.send("NICK #{twitch_user}")
-      ws.send("JOIN ##{@channel}")
+      @wsc.send("PASS oauth:#{oauth_string}")
+      @wsc.send("NICK #{twitch_user}")
+      @wsc.send("JOIN ##{@channel}")
     end
 
     def parse_message(message)
@@ -36,11 +37,11 @@ module Tw
     end
 
     def pong
-      ws.send('PONG :tmi.twitch.tv')
+      @wsc.send('PONG :tmi.twitch.tv')
     end
 
     def send_message(message)
-      ws.send("PRIVMSG ##{@channel} :#{message}")
+      @wsc.send("PRIVMSG ##{@channel} :#{message}")
     end
   end
 end

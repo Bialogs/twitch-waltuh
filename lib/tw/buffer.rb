@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Tw
+  # First-in-first-out buffer with a fixed size
   class Buffer
     attr_reader :values, :size
 

@@ -10,6 +10,8 @@ set :port, 4567
 set :bind, proc { ENV['development'] ? 'localhost' : '0.0.0.0' }
 
 if ENV['TW_TLS_ENABLED']
+  # Set SSL Settings on the Thin server and configure Sinatra server
+  # settings with the correct certificates and Thin server.
   class MyThinBackend < ::Thin::Backends::TcpServer
     def initialize(host, port, options)
       super(host, port)

@@ -1,27 +1,33 @@
 # frozen_string_literal: true
 
 require_relative '../buffer'
+require_relative '../chatter'
 require_relative '../conf/vips'
 
 module Tw
   module Handlers
+    # Send a command when vips in the list type a chat command
     class Vip
       def initialize(vips, vip_word_list)
-        @semaphore = Mutex.new()
-        @vips_hash = {}
-        vips.each { |vip| @vips_hash[vip] = nil }
+        @semaphore = Mutex.new
+        @vips = vips
         @vip_word_list = vip_word_list
+        @cooldown_seconds = 600
       end
 
-      def on_cooldown?(key)
-        !@vips_hash[key].nil? && @vips_hash[key] + 600 > Time.now.to_i
+      def on_cooldown?(hash, key)
+        !hash[key].nil? && hash[key] + @cooldown_seconds > Time.now.to_i
+      end
+
+      def time_left(timestamp)
+        (timestamp + @cooldown_seconds - Time.now.to_i)
       end
 
       def operation(message)
         proc do
-          next false unless @vips_hash.include?(message[:user])
+          next false unless @vips.include?(message[:user])
 
-          next false if on_cooldown?(message[:user])
+          next false if on_cooldown?(@vips, message[:user])
 
           next false unless message[:body].start_with?('!sound')
 
@@ -31,18 +37,33 @@ module Tw
 
           next false unless @vip_word_list.include?(message_array[1])
 
-          @semaphore.synchronize {
-            @vips_hash[message[:user]] = Time.now.to_i
-          }
+          next false if on_cooldown?(@vip_word_list, message_array[1])
+
+          @semaphore.synchronize do
+            @vips[message[:user]] = Time.now.to_i
+            @vip_word_list[message_array[1]] = Time.now.to_i
+          end
+
           true
         end
       end
 
-      def callback(message, player)
+      def callback(message, player, chatter)
         proc do |result|
           if result
             cmd = "#{self.class.name.split('::').last.downcase},#{message[:user]},#{message[:body].split(' ')[1]}"
             EM.defer(player.operation(cmd), player.callback, player.errback)
+          else
+            msg = "@#{message[:user]} "
+
+            if on_cooldown?(@vips, message[:user])
+              msg << "you are on cooldown for #{time_left(@vips[message[:user]])} seconds"
+            else
+              vip_word = message[:body].split(' ')[1]
+              msg << "#{vip_word} is on cooldown for #{time_left(@vip_word_list[vip_word])}"
+            end
+
+            EM.defer(chatter.operation(msg), chatter.callback, chatter.errback)
           end
         end
       end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Tw
+  # Chatbot application configuration
   class Configuration
     attr_reader :oauth_string, :wss_server, :twitch_user, :twitch_channel, :media_server
 

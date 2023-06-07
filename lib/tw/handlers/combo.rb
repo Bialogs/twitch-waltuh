@@ -4,6 +4,8 @@ require_relative '../buffer'
 
 module Tw
   module Handlers
+    # Send a command when 5 of the same word are send by different chatters
+    # in a row.
     class Combo
       def initialize
         @semaphore = Mutex.new

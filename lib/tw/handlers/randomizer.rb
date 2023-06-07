@@ -5,9 +5,13 @@ require_relative '../conf/words'
 
 module Tw
   module Handlers
+    # Send a command when the words are typed in chat in the correct order.
+    # Changes the order after each correct trigger.
     class Randomizer
       def initialize(emote_list)
         @semaphore = Mutex.new
+        @cooldown_seconds = 90
+        @hint_cooldown_seconds = 1800
         @last_solved_at = nil
         @last_hint_at = Time.now.to_i
         @emote_list = emote_list
@@ -29,7 +33,7 @@ module Tw
       end
 
       def on_cooldown?
-        !@last_solved_at.nil? && @last_solved_at + 90 > Time.now.to_i
+        !@last_solved_at.nil? && @last_solved_at + @cooldown_seconds > Time.now.to_i
       end
 
       def process_sync(word)
@@ -44,6 +48,7 @@ module Tw
           next false unless @buffer.values == @order
 
           @last_solved_at = Time.now.to_i
+          @last_hint_at = nil
           new_order
           @buffer = Buffer.new(@order.size)
           true
@@ -77,18 +82,19 @@ module Tw
 
       def hint_enabled?
         now = Time.now.to_i
-        @last_solved_at + 1800 >= now && @last_hint_at + 1800 >= now
+        (@last_solved_at + @hint_cooldown_seconds >= now) &&
+          (@last_hint_at.nil? || @last_hint_at + @hint_cooldown_seconds >= now)
       end
 
       def hint
         @last_hint_at = Time.now.to_i
-        @semaphore.synchronize {
+        @semaphore.synchronize do
           if @order.size >= 4
             "!waltuh HINT. Length: #{@order.size} Combination: #{@order.tally}"
           else
             "!waltuh HINT. Length: #{@order.size}"
           end
-        }
+        end
       end
     end
   end
