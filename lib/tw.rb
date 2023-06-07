@@ -22,10 +22,10 @@ module Tw
   conf = Configuration.new
 
   randomizer = Handlers::Randomizer.new(Conf::WORDS)
-  vip = Handlers::Vip.new(Conf::VIPS_SET, Conf::VIP_WORD_LIST_SET)
+  vip = Handlers::Vip.new(Conf::VIPS_HASH, Conf::VIP_WORD_LIST_HASH)
   combo = Handlers::Combo.new
 
-  player = Media::RemotePlayer.new(conf.media_server)
+  player = RemotePlayer.new(conf.media_server)
 
   EM.run do
     ws = Faye::WebSocket::Client.new(conf.wss_server)
@@ -47,7 +47,6 @@ module Tw
 
       message = irc.parse_message(event.data)
 
-      # Add player & frontend support for type
       unless message.nil?
         EM.defer(vip.operation(message), vip.callback(message, player))
         EM.defer(combo.operation(message), combo.callback(player))
