@@ -13,27 +13,28 @@ module Tw
         @cooldown_seconds = 90
         @hint_cooldown_seconds = 1800
         @last_solved_at = nil
-        @last_hint_at = Time.now.to_i
+        @last_hint_at = nil
         @emote_list = emote_list
         @max_combinations = emote_list.size
         @semaphore.synchronize do
-          @order = []
           new_order
-          @buffer = Buffer.new(@order.size)
         end
       end
 
       def new_order
+        @last_solved_at = Time.now.to_i
+        @last_hint_at = nil
         @order = []
         (rand(@max_combinations) + 1).times do
           @order << @emote_list[rand(@max_combinations)]
         end
         print 'New Randomizer order is: '
         p @order
+        @buffer = Buffer.new(@order.size)
       end
 
       def on_cooldown?
-        !@last_solved_at.nil? && @last_solved_at + @cooldown_seconds > Time.now.to_i
+        @last_solved_at + @cooldown_seconds > Time.now.to_i
       end
 
       def process_sync(word)
@@ -47,11 +48,8 @@ module Tw
 
           next false unless @buffer.values == @order
 
-          @last_solved_at = Time.now.to_i
-          @last_hint_at = nil
           new_order
-          @buffer = Buffer.new(@order.size)
-          true
+          next true
         end
       end
 
@@ -80,10 +78,15 @@ module Tw
         end
       end
 
-      def hint_enabled?
+      def hint_on_cooldown?
         now = Time.now.to_i
-        (@last_solved_at + @hint_cooldown_seconds >= now) &&
-          (@last_hint_at.nil? || @last_hint_at + @hint_cooldown_seconds >= now)
+        @semaphore.synchronize do
+          # If there has not been a hint yet and the Randomizer was last solved more than x seconds ago
+          next @last_hint_at.nil? && @last_solved_at + @hint_cooldown_seconds >= now
+
+          # If the last hint was more than x seconds ago
+          @last_hint_at + @hint_cooldown_seconds >= now
+        end
       end
 
       def hint
