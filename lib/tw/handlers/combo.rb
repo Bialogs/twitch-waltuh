@@ -14,10 +14,11 @@ module Tw
         @triggerers = nil
         @combo_word = nil
         @last_solved_at = nil
+        @cooldown_seconds = 1800
       end
 
       def on_cooldown?
-        !@last_solved_at.nil? && @last_solved_at + 1800 > Time.now.to_i
+        !@last_solved_at.nil? && @last_solved_at + @cooldown_seconds > Time.now.to_i
       end
 
       def broken_combo
@@ -45,7 +46,9 @@ module Tw
                 @comboers.insert(message[:user])
                 if !@comboers.values.any?(nil) && @comboers.values.uniq.count == @comboers.size
                   @last_solved_at = Time.now.to_i
-                  @triggerers = @comboers
+                  # Deep Copy Buffer
+                  @triggerers = Buffer.new(@comboers.size)
+                  @comboers.values.map { |comboer| @triggerers.insert(comboer) }
                   @combo_word = @last_word
                   broken_combo
                   true
@@ -62,7 +65,9 @@ module Tw
         proc do |result|
           if result
             p 'Combo Activated'
-            EM.defer(player.operation("#{self.class.name.split('::').last.downcase},#{@triggerers.values.join(' ')},#{@combo_word}"), player.callback,
+            cmd = "#{self.class.name.split('::').last.downcase},#{@triggerers.values.join(' ')},#{@combo_word}"
+            EM.defer(player.operation(cmd),
+                     player.callback,
                      player.errback)
           end
         end
