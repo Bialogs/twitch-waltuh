@@ -87,6 +87,13 @@
       <tbody>
       </tbody>
     <table>
+
+    <br />
+    <br />
+
+    <div id="sunnies">
+      <p>😎 Count: <span id="sunnies-count">0</span></p>
+    </table>
   </body>
 
   <script type="text/javascript">
@@ -101,14 +108,18 @@
       vipAudioMap.set('jesse', new Audio('https://' + window.location.host + '/jesse'));
       vipAudioMap.set('cancer', new Audio('https://' + window.location.host + '/cancer'));
       vipAudioMap.set('tumagerkin', new Audio('https://' + window.location.host + '/tumagerkin'));
+      vipAudioMap.set('pepsi', new Audio('https://' + window.location.host + '/can_opening'));
+      vipAudioMap.set('oklg', new Audio('https://' + window.location.host + '/oklg'));
     <% else %>
       var comboAudioSound = new Audio('http://' + window.location.host + '/waltuh');
-      var sunniesAudio = new Audio('http://' + window.location.host + '/waltuh');
+      var sunniesAudio = new Audio('http://' + window.location.host + '/hutlaw');
       var randomizerAudio = new Audio('http://' + window.location.host + '/waltuh');
       vipAudioMap.set('97', new Audio('http://' + window.location.host + '/97'));
       vipAudioMap.set('jesse', new Audio('http://' + window.location.host + '/jesse'));
       vipAudioMap.set('cancer', new Audio('http://' + window.location.host + '/cancer'));
       vipAudioMap.set('tumagerkin', new Audio('http://' + window.location.host + '/tumagerkin'));
+      vipAudioMap.set('pepsi', new Audio('http://' + window.location.host + '/can_opening'));
+      vipAudioMap.set('oklg', new Audio('http://' + window.location.host + '/oklg'));
     <% end %>
 
     for (var i = 0; i < 3; i++) {
@@ -128,8 +139,12 @@
     };
 
     async function handle(message, randomizerAudio, comboAudio) {
-      tbody = document.getElementById(message[0]).getElementsByTagName('tbody')[0];
-      tr = tbody.insertRow();
+      elem = document.getElementById(message[0])
+      if (elem.nodeName == "TABLE") {
+        tbody = elem.getElementsByTagName('tbody')[0]
+        tr = tbody.insertRow();
+      }
+
       switch(message[0]) {
         case "randomizer":
           td = tr.insertCell().appendChild(document.createTextNode(message[1]));
@@ -155,7 +170,8 @@
           comboAudio[2].play();
           break;
         case "sunnies":
-          tr.insertCell().appendChild(document.createTextNode(message[1]));
+          count = document.getElementById("sunnies-count");
+          count.innerHTML = Number(count.innerHTML) + 1;
           sunniesAudio.play();
           break;
         default:

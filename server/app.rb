@@ -75,6 +75,18 @@ get '/tumagerkin' do
   send_file File.join(settings.public_folder, 'tumagerkin.mp3')
 end
 
+get '/oklg' do
+  send_file File.join(settings.public_folder, 'oklg.mp3')
+end
+
+get '/can_opening' do
+  send_file File.join(settings.public_folder, 'can_opening.mp3')
+end
+
 get '/hutlaw' do
   send_file File.join(settings.public_folder, 'hutlaw.mp3')
+end
+
+get '/favicon.ico' do
+  send_file File.join(settings.public_folder, 'favicon.ico')
 end
