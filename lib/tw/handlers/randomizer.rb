@@ -58,6 +58,8 @@ module Tw
           is_success = false
           next is_success if on_cooldown?
 
+          next if message[:user] == "nightbot"
+
           message[:body].split(' ').each do |word|
             # When autocompleting with 7tv, BTTV, FFZ, this junk unicode character is sent.
             next if word == '\u{E0000}'
