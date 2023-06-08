@@ -60,7 +60,7 @@ module Tw
               msg << "you are on cooldown for #{time_left(@vips[message[:user]])} seconds"
             else
               vip_word = message[:body].split(' ')[1]
-              msg << "#{vip_word} is on cooldown for #{time_left(@vip_word_list[vip_word])}"
+              msg << "#{vip_word} is on cooldown for #{time_left(@vip_word_list[vip_word])} seconds"
             end
 
             EM.defer(chatter.operation(msg), chatter.callback, chatter.errback)

@@ -109,6 +109,8 @@
       vipAudioMap.set('tumagerkin', new Audio('http://' + window.location.host + '/tumagerkin'));
     <% end %>
 
+    vipAuidoMap.get('tumagerkin').volume = 0.6;
+
     for (var i = 0; i < 3; i++) {
       csn = comboAudioSound.cloneNode();
       csn.volume = 0.4;
@@ -163,7 +165,6 @@
         <% else %>
           var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
         <% end %>
-
 
         ws.onopen = function()  {
           indication = document.getElementById("connection-indiciation");
