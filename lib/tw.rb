@@ -14,9 +14,11 @@ require_relative 'tw/handlers/randomizer'
 require_relative 'tw/handlers/vip'
 require_relative 'tw/handlers/combo'
 require_relative 'tw/handlers/vote_kick'
+require_relative 'tw/handlers/sunnies'
 
 require_relative 'tw/conf/words'
 require_relative 'tw/conf/vips'
+require_relative 'tw/conf/sunnies'
 
 # Main program module containing setup, event loop initialization, and handler
 # registration
@@ -27,6 +29,7 @@ module Tw
   vip = Handlers::Vip.new(Conf::VIPS_HASH, Conf::VIP_WORD_LIST_HASH)
   combo = Handlers::Combo.new
   vote_kick = Handlers::VoteKick.new
+  sunnies = Handlers::Sunnies.new(Conf::SUNNIES_WORDS_SET)
 
   player = RemotePlayer.new(conf.media_server)
 
@@ -56,6 +59,7 @@ module Tw
         EM.defer(combo.operation(message), combo.callback(player))
         EM.defer(randomizer.operation(message), randomizer.callback(message, player))
         EM.defer(vote_kick.operation(message), vote_kick.callback(player))
+        EM.defer(sunnies.operation(message), sunnies.callback(player))
       end
     end
 
