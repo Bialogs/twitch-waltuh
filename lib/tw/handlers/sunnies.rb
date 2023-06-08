@@ -10,7 +10,7 @@ module Tw
         @semaphore = Mutex.new
         @last_solved_at = nil
         @count = 0
-        @max = 25
+        @max = 10
         @last_solved_at = nil
         @cooldown_seconds = 90
         @sunnies_words = words
@@ -38,6 +38,7 @@ module Tw
               p "Count: #{@count}"
               if @count == @max
                 @last_solved_at = Time.now.to_i
+                @count = 0
                 next true
               end
 
