@@ -58,7 +58,7 @@ module Tw
           is_success = false
           next is_success if on_cooldown?
 
-          next if message[:user] == "nightbot"
+          next if message[:user] == 'nightbot'
 
           message[:body].split(' ').each do |word|
             # When autocompleting with 7tv, BTTV, FFZ, this junk unicode character is sent.
@@ -85,11 +85,9 @@ module Tw
         @semaphore.synchronize do
           # If there has not been a hint yet and the Randomizer was last solved more than x seconds ago and
           # the last hint was given more than x seconds ago
-          if @last_hint_at.nil?
-            next @last_solved_at + @hint_cooldown_seconds >= now
-          else
-            next @last_hint_at + @hint_cooldown_seconds >= now
-          end
+          next @last_solved_at + @hint_cooldown_seconds >= now if @last_hint_at.nil?
+
+          next @last_hint_at + @hint_cooldown_seconds >= now
         end
       end
 
