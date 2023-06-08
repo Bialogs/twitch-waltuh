@@ -27,15 +27,15 @@ module Tw
         proc do
           next nil unless @vips.include?(message[:user])
 
-          next false if on_cooldown?(@vips, message[:user])
-
           next nil unless message[:body].start_with?('!sound')
+
+          next false if on_cooldown?(@vips, message[:user])
 
           message_array = message[:body].split(' ')
 
-          next false unless message_array.size == 2
+          next nil unless message_array.size == 2
 
-          next false unless @vip_word_list.include?(message_array[1])
+          next nil unless @vip_word_list.include?(message_array[1])
 
           next false if on_cooldown?(@vip_word_list, message_array[1])
 
@@ -53,19 +53,17 @@ module Tw
           if result
             cmd = "#{self.class.name.split('::').last.downcase},#{message[:user]},#{message[:body].split(' ')[1]}"
             EM.defer(player.operation(cmd), player.callback, player.errback)
-          else
-            unless result.nil?
-              msg = "@#{message[:user]} "
+          elsif !result.nil?
+            msg = "@#{message[:user]} "
 
-              if on_cooldown?(@vips, message[:user])
-                msg << "you are on cooldown for #{time_left(@vips[message[:user]])} seconds"
-              else
-                vip_word = message[:body].split(' ')[1]
-                msg << "#{vip_word} is on cooldown for #{time_left(@vip_word_list[vip_word])}"
-              end
-
-              EM.defer(chatter.operation(msg), chatter.callback, chatter.errback)
+            if on_cooldown?(@vips, message[:user])
+              msg << "you are on cooldown for #{time_left(@vips[message[:user]])} seconds"
+            else
+              vip_word = message[:body].split(' ')[1]
+              msg << "#{vip_word} is on cooldown for #{time_left(@vip_word_list[vip_word])}"
             end
+
+            EM.defer(chatter.operation(msg), chatter.callback, chatter.errback)
           end
         end
       end

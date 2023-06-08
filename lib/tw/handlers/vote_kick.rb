@@ -14,7 +14,7 @@ module Tw
         @vote_seconds = 90
         @cooldown_seconds = 1800
         @last_triggered = nil
-        @vote_words = Set["1/5", "2/5", "3/5", "4/5", "5/5"]
+        @vote_words = Set['1/5', '2/5', '3/5', '4/5', '5/5']
         @seen = Set[]
       end
 
@@ -35,7 +35,7 @@ module Tw
           @semaphore.synchronize do
             if !@start_time.nil? && @start_time + @vote_seconds < Time.now.to_i
               reset
-              p "Vote timed out"
+              p 'Vote timed out'
             end
           end
 
