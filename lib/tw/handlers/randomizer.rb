@@ -81,11 +81,13 @@ module Tw
       def hint_on_cooldown?
         now = Time.now.to_i
         @semaphore.synchronize do
-          # If there has not been a hint yet and the Randomizer was last solved more than x seconds ago
-          next @last_hint_at.nil? && @last_solved_at + @hint_cooldown_seconds >= now
-
-          # If the last hint was more than x seconds ago
-          @last_hint_at + @hint_cooldown_seconds >= now
+          # If there has not been a hint yet and the Randomizer was last solved more than x seconds ago and
+          # the last hint was given more than x seconds ago
+          if @last_hint_at.nil?
+            next @last_solved_at + @hint_cooldown_seconds >= now
+          else
+            next @last_hint_at + @hint_cooldown_seconds >= now
+          end
         end
       end
 
