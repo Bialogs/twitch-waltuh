@@ -74,3 +74,7 @@ end
 get '/tumagerkin' do
   send_file File.join(settings.public_folder, 'tumagerkin.mp3')
 end
+
+get '/hutlaw' do
+  send_file File.join(settings.public_folder, 'hutlaw.mp3')
+end
