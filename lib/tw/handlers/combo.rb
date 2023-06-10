@@ -44,7 +44,7 @@ module Tw
               else
                 @last_word = words[0]
                 @comboers.insert(message[:user])
-                if !@comboers.values.any?(nil) && @comboers.values.uniq.count == @comboers.size
+                if @comboers.values.none?(nil) && @comboers.values.uniq.count == @comboers.size
                   @last_solved_at = Time.now.to_i
                   # Deep Copy Buffer
                   @triggerers = Buffer.new(@comboers.size)
