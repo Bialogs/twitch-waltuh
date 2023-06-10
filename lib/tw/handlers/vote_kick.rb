@@ -14,7 +14,8 @@ module Tw
         @vote_seconds = 90
         @cooldown_seconds = 1800
         @last_triggered = nil
-        @vote_words = Set['1/5', '2/5', '3/5', '4/5', '5/5']
+        # @vote_words = Set['1/5', '2/5', '3/5', '4/5', '5/5']
+        @vote_words = Set['1', '2', '3', '4', '5']
         @seen = Set[]
       end
 
@@ -58,6 +59,7 @@ module Tw
               @first = message[:user]
             end
 
+            p @seen
             if @seen == @vote_words && @voters.size == @vote_words.size
               success = true
               reset

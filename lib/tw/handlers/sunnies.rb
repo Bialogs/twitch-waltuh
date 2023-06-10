@@ -27,7 +27,7 @@ module Tw
           words = message[:body].split(' ').to_set
 
           in_common = @sunnies_words & words
-          if in_common.size == 0
+          if in_common.empty?
             @semaphore.synchronize do
               @count = 0
               next false
@@ -52,7 +52,7 @@ module Tw
         proc do |result|
           if result
             p 'Sunnies Activated'
-            cmd = "#{self.class.name.split('::').last.downcase}"
+            cmd = self.class.name.split('::').last.downcase.to_s
             EM.defer(player.operation(cmd), player.callback, player.errback)
           end
         end
