@@ -4,8 +4,7 @@
     <h1>Twitch Waltuh</h1>
 
     <a id="autoplay-link" href="#">Click this to enable autoplay sound</a>
-
-    <table style="border:3px solid black">'
+    <table style="border:3px solid black">
       <thead>
         <tr>
           <th>Sound</th>
@@ -23,79 +22,72 @@
         </tr>
       </tbody>
     </table>
-    <br />
-    <br />
-    <table style="border:3px solid black" id="randomizer">
-      <thead>
-        <tr>
-          <th>
-            Randomizer triggered by (latest last):
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    <table>
-
-    <br />
-    <br />
-
-    <table style="border:3px solid black" id="combo">
-      <thead>
-        <tr>
-          <th>
-            Combo triggered by (latest last):
-          </th>
-          <th>
-           Word:
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    <table>
-
-    <br />
-    <br />
-
-    <table style="border:3px solid black" id="votekick">
-      <thead>
-        <tr>
-          <th>
-            VoteKick started by (latest last):
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    <table>
-
-    <br />
-    <br />
-
-    <table style="border:3px solid black" id="vip">
-      <thead>
-        <tr>
-          <th>
-            Vip triggered by (latest last):
-          </th>
-          <th>
-           Word:
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    <table>
-
-    <br />
-    <br />
-
-    <div id="sunnies">
-      <p>😎 Count: <span id="sunnies-count">0</span></p>
-    </table>
-
+    <h3>Triggers</h3>
     <div id="user" style="hidden:true"></div>
+    <div style="display:flex">
+      <div style="display:flex;flex:50%">
+        <div style="flex:1 1 auto;display:flex">
+          <table style="border:3px solid black" id="randomizer">
+            <thead>
+              <tr>
+                <th>
+                  Randomizer triggered by:
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+        <div style="flex:1 1 auto;display:flex">
+          <table style="border:3px solid black" id="votekick">
+            <thead>
+              <tr>
+                <th>
+                  VoteKick started by:
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="display:flex;flex:50%">
+        <div style="flex:1 1 auto;display:flex">
+          <table style="border:3px solid black" id="combo">
+            <thead>
+              <tr>
+                <th>
+                  Combo triggered by:
+                </th>
+                <th>
+                Word:
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+        <div style="flex:1 1 auto;display:flex">
+          <table style="border:3px solid black" id="vip">
+            <thead>
+              <tr>
+                <th>
+                  Vip triggered by:
+                </th>
+                <th>
+                Word:
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </body>
 
   <script type="text/javascript">
