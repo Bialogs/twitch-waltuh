@@ -94,6 +94,8 @@
     <div id="sunnies">
       <p>😎 Count: <span id="sunnies-count">0</span></p>
     </table>
+
+    <div id="user" style="hidden:true"></div>
   </body>
 
   <script type="text/javascript">
@@ -174,6 +176,9 @@
           count = document.getElementById("sunnies-count");
           count.innerHTML = Number(count.innerHTML) + 1;
           sunniesAudio.play();
+          break;
+        case "user":
+          randomizerAudio.play();
           break;
         default:
           console.log("Not implemented yet");
