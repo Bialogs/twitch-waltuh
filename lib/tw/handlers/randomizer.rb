@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../buffer'
-require_relative '../conf/words'
+require_relative '../conf/random_words'
 
 module Tw
   module Handlers

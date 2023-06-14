@@ -17,7 +17,7 @@ require_relative 'tw/handlers/vote_kick'
 require_relative 'tw/handlers/sunnies'
 require_relative 'tw/handlers/user'
 
-require_relative 'tw/conf/words'
+require_relative 'tw/conf/random_words'
 require_relative 'tw/conf/vips'
 require_relative 'tw/conf/sunnies'
 require_relative 'tw/conf/users'
@@ -28,7 +28,7 @@ module Tw
   conf = Configuration.new
   player = RemotePlayer.new(conf.media_server)
 
-  randomizer = Handlers::Randomizer.new(Conf::WORDS)
+  randomizer = Handlers::Randomizer.new(Conf::RANDOM_WORDS)
   vip = Handlers::Vip.new(Conf::VIPS_HASH, Conf::VIP_WORD_LIST_HASH)
   combo = Handlers::Combo.new
   vote_kick = Handlers::VoteKick.new
