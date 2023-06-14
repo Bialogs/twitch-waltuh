@@ -44,7 +44,7 @@
             <thead>
               <tr>
                 <th>
-                  VoteKick started by:
+                  Vote kick triggered by:
                 </th>
               </tr>
             </thead>
@@ -53,6 +53,11 @@
           </table>
         </div>
       </div>
+      <div style="display:flex;flex:50%">
+      </div>
+    </div>
+    <br />
+    <div style="display:flex">
       <div style="display:flex;flex:50%">
         <div style="flex:1 1 auto;display:flex">
           <table style="border:3px solid black" id="combo">
@@ -87,12 +92,35 @@
           </table>
         </div>
       </div>
+      <div style="display:flex;flex:50%">
+      </div>
     </div>
+    <br />
     <div style="display:flex">
       <div style="display:flex;flex:50%">
-        <div id="sunnies">
-          <p>😎 Count: <span id="sunnies-count">0</span></p>
+        <div style="flex:1 1 auto;display:flex">
+          <div id="sunnies">
+            <p>😎 Count: <span id="sunnies-count">0</span></p>
+          </div>
         </div>
+        <div style="flex:1 1 auto;display:flex">
+          <table style="border:3px solid black" id="randomemote">
+            <thead>
+              <tr>
+                <th>
+                  Random emote triggered by:
+                </th>
+                <th>
+                Word:
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="display:flex;flex:50%">
       </div>
     </div>
   </body>
@@ -105,6 +133,7 @@
       var comboAudioSound = new Audio('https://' + window.location.host + '/waltuh');
       var sunniesAudio = new Audio('https://' + window.location.host + '/hutlaw');
       var randomizerAudio = new Audio('https://' + window.location.host + '/waltuh');
+      var userAudio = new Audio('https://' + window.location.host + '/bark');
       vipAudioMap.set('97', new Audio('https://' + window.location.host + '/97'));
       vipAudioMap.set('jesse', new Audio('https://' + window.location.host + '/jesse'));
       vipAudioMap.set('cancer', new Audio('https://' + window.location.host + '/cancer'));
@@ -115,6 +144,7 @@
       var comboAudioSound = new Audio('http://' + window.location.host + '/waltuh');
       var sunniesAudio = new Audio('http://' + window.location.host + '/hutlaw');
       var randomizerAudio = new Audio('http://' + window.location.host + '/waltuh');
+      var userAudio = new Audio('http://' + window.location.host + '/bark');
       vipAudioMap.set('97', new Audio('http://' + window.location.host + '/97'));
       vipAudioMap.set('jesse', new Audio('http://' + window.location.host + '/jesse'));
       vipAudioMap.set('cancer', new Audio('http://' + window.location.host + '/cancer'));
@@ -132,7 +162,7 @@
     comboAudioSound = null;
 
     vipAudioMap.get('tumagerkin').volume = 0.2;
-    vipAudioMap.get('pepsi').volume = 0.4;
+    vipAudioMap.get('pepsi').volume = 0.3;
     randomizerAudio.volume = 0.4;
     sunniesAudio.volume = 0.4;
 
@@ -177,6 +207,11 @@
           sunniesAudio.play();
           break;
         case "user":
+          randomizerAudio.play();
+          break;
+        case "randomemote":
+          tr.insertCell().appendChild(document.createTextNode(message[1]));
+          tr.insertCell().appendChild(document.createTextNode(message[2]));
           randomizerAudio.play();
           break;
         default:

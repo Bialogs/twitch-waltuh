@@ -71,7 +71,7 @@ module Tw
         EM.defer(vote_kick.operation(message), vote_kick.callback(player))
         EM.defer(sunnies.operation(message), sunnies.callback(player))
         EM.defer(user.operation(message), user.callback(player))
-        EM.defer(emote.operation(message), emote.callback(player))
+        EM.defer(emote.operation(message), emote.callback(message, player))
       end
     end
 

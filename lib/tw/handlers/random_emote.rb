@@ -10,7 +10,7 @@ module Tw
         @last_solved_at = nil
         @emotes_set = emotes_set
         @emotes_array = emotes_array
-        @who = nil
+        @last_emote = nil
         @cooldown_seconds = 300
         @selected_emote = @emotes_array.sample
         p "Random emote is #{@selected_emote}"
@@ -30,7 +30,7 @@ module Tw
 
           @semaphore.synchronize do
             @last_solved_at = Time.now.to_i
-            @who = message[:user]
+            @last_emote = @selected_emote
             @selected_emote = @emotes_array.sample
             p "Random emote is #{@selected_emote}"
           end
@@ -39,11 +39,11 @@ module Tw
         end
       end
 
-      def callback(player)
+      def callback(message, player)
         proc do |result|
           if result
             p 'Random emote found'
-            cmd = "#{self.class.name.split('::').last.downcase.to_s},#{@who}"
+            cmd = "#{self.class.name.split('::').last.downcase.to_s},#{message[:user]},#{@last_emote}"
             EM.defer(player.operation(cmd), player.callback, player.errback)
           end
         end
