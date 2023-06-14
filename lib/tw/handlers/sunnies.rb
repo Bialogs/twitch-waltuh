@@ -11,7 +11,6 @@ module Tw
         @last_solved_at = nil
         @count = 0
         @max = 10
-        @last_solved_at = nil
         @cooldown_seconds = 90
         @sunnies_words = words
       end
