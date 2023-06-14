@@ -47,6 +47,11 @@ module Tw
 
         irc.send_message(randomizer.hint)
       end
+
+      # 5 hours 45 minutes
+      EM.add_periodic_timer(19620) do
+        player.operation('user').call
+      end
     end
 
     ws.on :message do |event|
