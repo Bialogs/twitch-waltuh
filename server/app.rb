@@ -37,7 +37,7 @@ end
 get '/' do
   if !request.websocket?
     @tls = ENV.fetch('TW_TLS_ENABLED', false)
-    @alternate_user = ENV.fetch('TW_ALTERNATE_USER', "")
+    @alternate_user = ENV.fetch('TW_ALTERNATE_USER', "''")
     erb :index
   else
     request.websocket do |ws|

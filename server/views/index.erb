@@ -208,7 +208,7 @@
           sunniesAudio.play();
           break;
         case "user":
-          var alternate_user = <% @alternate %>;
+          var alternate_user = <%= @alternate_user %>;
           if (alternate_user == message[1]) {
             userAudio.play();
           } else {
