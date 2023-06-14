@@ -39,7 +39,7 @@ module Tw
 
       def process_sync(word)
         @semaphore.synchronize do
-          unless Conf::WORDS_SET.include?(word)
+          unless Conf::RANDOM_WORDS_SET.include?(word)
             @buffer.reset
             next false
           end
