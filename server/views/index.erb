@@ -208,7 +208,12 @@
           sunniesAudio.play();
           break;
         case "user":
-          randomizerAudio.play();
+          var alternate_user = <% @alternate %>;
+          if (alternate_user == message[1]) {
+            userAudio.play();
+          } else {
+            randomizerAudio.play();
+          }
           break;
         case "randomemote":
           tr.insertCell().appendChild(document.createTextNode(message[1]));

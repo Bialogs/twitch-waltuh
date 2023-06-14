@@ -9,7 +9,7 @@ set :public_folder, proc { File.join(File.expand_path(__dir__), 'public') }
 set :port, 4567
 set :bind, proc { ENV['development'] ? 'localhost' : '0.0.0.0' }
 
-if ENV['TW_TLS_ENABLED']
+if ENV.fetch('TW_TLS_ENABLED', false)
   # Set SSL Settings on the Thin server and configure Sinatra server
   # settings with the correct certificates and Thin server.
   class MyThinBackend < ::Thin::Backends::TcpServer
@@ -36,7 +36,8 @@ end
 
 get '/' do
   if !request.websocket?
-    @tls = ENV['TW_TLS_ENABLED']
+    @tls = ENV.fetch('TW_TLS_ENABLED', false)
+    @alternate_user = ENV.fetch('TW_ALTERNATE_USER', "")
     erb :index
   else
     request.websocket do |ws|
