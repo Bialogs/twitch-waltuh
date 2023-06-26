@@ -47,16 +47,50 @@ List of handlers, what they do, how to trigger them, and configuration.
 
 #### Combo
 
+Combo will play a sound when 5 of the same words are sent in a row by 5 unique chatters.
+
+```
+@comboers # length of combo and amount of unique chatters
+```
+
 #### RandomEmote
+
+Pick a random emote from `emotes.txt`, and play a sound when it is used in chat.
 
 #### Randomizer
 
+Randomize the order of words in `random_words.txt`. When the correct order is typed by the chat consecutively, play a sound.
+
 #### Six
+
+Some chats have a random dice roll feature built in. When that rolls a 6, play a sound.
+
+```
+@bot # what bot will be performing the roll
+@text # the text to look for
+```
 
 #### Sunnies
 
+When 10 emotes from `sunnies_words.txt` are typed in a row, play a sound. `sunnies_words.txt` must be the only word in the message and the chatters must be unique.
+
+```
+@max # number of sunnies_words.txt that need to be sent to trigger a sound
+```
+
 #### Users
+
+When any user in the `users.txt` list sends a chat message, play a sound.
 
 #### Vips
 
+When a user is added to `vips.txt` they can use the command `!sound` in combination with a word in `vip_words.txt` to play the sound. Each user in the list has a cooldown and each sound has a cooldown. The chatbot will let the user know if the sound or they are on cooldown.
+
 #### VoteKick
+
+When a set of words is sent in a certain amount of time by unique chatters, play a sound.
+
+```
+@vote_words # set of words that must be completed in the timeframe
+@vote_seconds # amount of time before all words need to be sent in the chat
+```
