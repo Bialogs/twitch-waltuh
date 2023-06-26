@@ -43,7 +43,7 @@ module Tw
         proc do |result|
           if result
             p 'Random emote found'
-            cmd = "#{self.class.name.split('::').last.downcase.to_s},#{message[:user]},#{@last_emote}"
+            cmd = "#{self.class.name.split('::').last.downcase},#{message[:user]},#{@last_emote}"
             EM.defer(player.operation(cmd), player.callback, player.errback)
           end
         end
@@ -51,4 +51,3 @@ module Tw
     end
   end
 end
-

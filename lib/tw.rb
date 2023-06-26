@@ -52,7 +52,7 @@ module Tw
       end
 
       # 5 hours 45 minutes
-      EM.add_periodic_timer(19620) do
+      EM.add_periodic_timer(19_620) do
         player.operation('user').call
       end
     end

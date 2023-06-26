@@ -1,10 +1,12 @@
-Tw is a combination Sinatra and Twitch Chat bot that analyzes chat messages in real time for an order of words. When the order of words is found, the chat bot sends an async websocket request to the Sinatra server, which will forward it to all connected clients, and those clients will play the mp3. Tw can also run in local mode, without a Sinatra server. The local mode will play the sound over default audio device using an async event.
+Tw is a combination Sinatra and Twitch Chat bot that analyzes chat messages in real time for an order of words. When the order of words is found, the chat bot sends an async websocket request to the Sinatra server, which will forward it to all connected clients, and those clients will play the mp3. Tw can also run in local mode, without a Sinatra server. The local mode will play the sound over default audio device using an async event. The webserver can be added as an OBS browser source after autoplay has been enabled to play the sounds through the stream.
 
-### Design
+### Internal Design
 
 Tw is based on the same architecture as my `tsc` project. The main addition is the Sinatra server so that users do not have to spend time setting up WSL or Ruby for Windows. Secondarily, Tw uses the `EventMachine#defer` pattern to background I/O tasks such as playing the audio or sending additional websocket requests to the media server in server mode as well as offloading logic for calculating if events have been triggered.
 
-The main `tw.rb` module sets up `Handlers`, `Conf`, and the websocket connection. It then enters into the main `EventMachine` loop where on new websocket messages a sound event handler is started via `EM#defer`. To add new triggers for sounds, create a new handler with callbacks expected by `EM#defer` and add an entry into the list `on :message`. In the implementation of a handler it is important to use a `Mutex` to synchronize access to buffers and shared state since the trigger logic can run in different EventMachine threads at once.
+The main `tw.rb` module sets up `Handlers`, `Conf`, and the websocket connection. It then enters into the main `EventMachine` loop where on new websocket messages a sound event handler is started via `EM#defer`. Some handlers and functions are executing via `EventMachine#add_periodic_timer`.
+
+To add new triggers for sounds, create a new handler with callbacks expected by `EM#defer` and add an entry into the list `on :message`. In the implementation of a handler it is important to use a `Mutex` to synchronize access to buffers and shared state since the trigger logic can run in different EventMachine threads at once. There is a bit of a limit on how many handlers that can be created due to the internal `EventMachine` limit 20 threads assigned for deferred execution.
 
 ### Installation
 
@@ -38,3 +40,23 @@ Sinatra has the following environment variables:
 ### Running
 
 Use `foreman start` from the project's root directory to start the chatbot and Sinatra at the same time. The chatbot will connect based on config and the webserver will start on `localhost:4567` or `0.0.0.0:4567` unless the development environment variable is set.
+
+### Handlers
+
+List of handlers, what they do, how to trigger them, and configuration.
+
+#### Combo
+
+#### RandomEmote
+
+#### Randomizer
+
+#### Six
+
+#### Sunnies
+
+#### Users
+
+#### Vips
+
+#### VoteKick
