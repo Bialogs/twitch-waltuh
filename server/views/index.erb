@@ -126,6 +126,17 @@
       <div style="display:flex;flex:50%">
       </div>
     </div>
+    <div style="display:flex">
+      <div style="display:flex;flex:50%">
+        <div style="flex:1 1 auto;display:flex">
+          <div id="sunnies">
+            <p>Six Count: <span id="six-count">0</span></p>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex:50%">
+      </div>
+    <div>
   </body>
 
   <script type="text/javascript">
@@ -221,6 +232,11 @@
         case "randomemote":
           tr.insertCell().appendChild(document.createTextNode(message[1]));
           tr.insertCell().appendChild(document.createTextNode(message[2]));
+          randomizerAudio.play();
+          break;
+        case "six":
+          count = document.getElementById("six-count");
+          count.innerHTML = Number(count.innerHTML) + 1;
           randomizerAudio.play();
           break;
         default:

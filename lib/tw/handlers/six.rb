@@ -16,7 +16,7 @@ module Tw
           next false unless message[:user] == @bot
 
           next false unless message[:body].include?(@text)
-
+          p '6 rolled'
           next true
         end
       end
