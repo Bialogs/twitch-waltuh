@@ -17,6 +17,7 @@ require_relative 'tw/handlers/vote_kick'
 require_relative 'tw/handlers/sunnies'
 require_relative 'tw/handlers/user'
 require_relative 'tw/handlers/random_emote'
+require_relative 'tw/handlers/six'
 
 require_relative 'tw/conf/random_words'
 require_relative 'tw/conf/emotes'
@@ -37,6 +38,7 @@ module Tw
   sunnies = Handlers::Sunnies.new(Conf::SUNNIES_WORDS_SET)
   user = Handlers::User.new(Conf::USERS_SET)
   emote = Handlers::RandomEmote.new(Conf::EMOTE_SET, Conf::EMOTE_LIST)
+  six = Handlers::Six.new
 
   EM.run do
     ws = Faye::WebSocket::Client.new(conf.wss_server)
@@ -72,6 +74,7 @@ module Tw
         EM.defer(sunnies.operation(message), sunnies.callback(player))
         EM.defer(user.operation(message), user.callback(player))
         EM.defer(emote.operation(message), emote.callback(message, player))
+        EM.defer(six.operation(message), six.callback(player))
       end
     end
 
