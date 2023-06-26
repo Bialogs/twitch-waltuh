@@ -92,6 +92,10 @@ get '/bark' do
   send_file File.join(settings.public_folder, 'bark.mp3')
 end
 
+get '/p' do
+  send_file File.join(settings.public_folder, 'p.mp3')
+end
+
 get '/favicon.ico' do
   send_file File.join(settings.public_folder, 'favicon.ico')
 end
